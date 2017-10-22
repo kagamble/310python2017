@@ -1,0 +1,18 @@
+Initial Commit
+
+********** accomplishments:
+
+mandelbrot display program in javascript rather than python, since the mouseclick coordinate must be passed to the program and python doesn't support this in the Django framework
+
+added a user login/password
+
+added a user profile with a color preference for coloring the mandelbrot display 
+
+implemented a reset to no zoom button, a view code button, and a make a pdf button
+
+
+********** things to do:
+
+add display of user profile color to admin user display 
+
+add functionality to the make a pdf button
