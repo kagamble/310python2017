@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Enjoy Mandelbrot Fractals</title>
+
+        <script>
+
+        //global variables
+	var xmin = -2.0; var xmax = 0.5;  //2.5 units in x direction corresponding to 1000
+	var ymin = -1.0; var ymax = 1.0;  //2.0 units in y direction corresponding to 800
+        var callNumber = 0;               //number of calls to showMandel
+        var magnification = 1;
+        var currentColor = "random";
+        var red = "red";
+        var random = "random";
+
+        function changeCurrentColor()
+        {
+          if (document.getElementById("changeColorRandom").checked)
+            currentColor = "random";
+          else if (document.getElementById("changeColorRed").checked)
+            currentColor = "red";
+          else if (document.getElementById("changeColorBlue").checked)
+            currentColor = "blue";
+          else if (document.getElementById("changeColorGreen").checked)
+            currentColor = "green";
+          else if (document.getElementById("changeColorPurple").checked)
+            currentColor = "purple";
+          else if (document.getElementById("changeColorOrange").checked)
+            currentColor = "orange";
+
+          Reset()
+
+          //debug print
+          //var color = " currentColor: " + currentColor;
+          //document.getElementById("currentColor").innerHTML = color;
+        }
+
+        function Reset()
+        {
+	  xmin = -2.0
+          xmax =  0.5;
+    	  ymin = -1.0;
+          ymax =  1.0;
+          callNumber = 0;
+          magnification = 1;
+          showMandel(0,0)
+        }          
+
+        function getCoordsAndShowMandel(event)
+        {
+          var x = event.clientX;
+          var y = event.clientY;
+
+          //debug print
+          //var coords = "X coord: " + x + ", Y coord: " + y;
+          //document.getElementById("mouseCoords").innerHTML = coords;
+
+          showMandel(x,y)
+        }
+
+        function setColorAndShowMandel(color)
+        {
+          currentColor = color;
+          if (currentColor == "")
+            currentColor = "random"
+
+          //debug print
+          //var color = " currentColor: " + currentColor;
+          //document.getElementById("currentColor").innerHTML = color;
+
+          showMandel(0,0)
+        }
+
+        function showMandel(xmouse, ymouse)
+        {
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	var xr = context.canvas.width;
+	var yr = context.canvas.height;
+	var imgd = context.createImageData(xr, yr);
+	var pix = imgd.data;
+
+        //set new xmin, xmax, ymin, ymax based on mouse coordinates   
+        callNumber = callNumber + 1;     
+        if (callNumber != 1)
+        {
+          //fudge xmouse & ymouse if not the initial showMandel
+          xmouse = xmouse - 10
+          ymouse = ymouse - 20
+
+          magnification = magnification * 1.5
+          xrange = xmax - xmin
+          yrange = ymax - ymin
+          xcenter = xmin + xmouse/1000. * xrange
+          ycenter = ymin + ymouse/800.  * yrange       
+          xmin = xcenter - xrange/(2 * magnification)
+          xmax = xcenter + xrange/(2 * magnification)
+          ymin = ycenter - yrange/(2 * magnification)
+          ymax = ycenter + yrange/(2 * magnification)
+
+          //debug print
+          //var coords = "xcenter: " + xcenter + ", ycenter: " + ycenter 
+          //           + ", xmin: " + xmin + ", xmax: " + xmax 
+          //           + ", ymin: " + ymin + ", ymax: " + ymax;
+          //document.getElementById("xyLimits").innerHTML = coords; 
+        }
+         
+
+	//coloring the image
+	var mr0 = 0; var mg0 = 0; var mb0 = 0;
+
+        if (currentColor == "random")
+        {
+          while(mr0 == mg0 || mr0 == mb0 || mg0 == mb0) 
+          {
+	    mr0 = Math.pow(2, Math.ceil(Math.random() * 3 + 3));   //8,16,32 or 64
+	    mg0 = Math.pow(2, Math.ceil(Math.random() * 3 + 3));
+	    mb0 = Math.pow(2, Math.ceil(Math.random() * 3 + 3)); 
+          }
+        }
+        else if (currentColor == "red")
+        {
+          mr0 = 8;
+          mg0 = 64;
+          mb0 = 64;
+        }
+        else if (currentColor == "blue")
+        {
+          //blue mr0 = 64; mg0 = 64; mb0 = 8;
+          //light blue
+          mr0 = 64;
+          mg0 = 8;
+          mb0 = 8;
+        }
+        else if (currentColor == "green")
+        {
+          mr0 = 32;
+          mg0 = 16;
+          mb0 = 64;
+        }
+        else if (currentColor == "purple")
+        {
+          mr0 = 8;
+          mg0 = 64;
+          mb0 = 8;
+        }
+        else if (currentColor == "orange")
+        {
+          mr0 = 16;
+          mg0 = 32;
+          mb0 = 64;
+        }
+
+        //yellow mr0 = 8;  mg0 = 8;  mb0 = 64;
+
+	var mr1 = 256 / mr0; var mg1 = 256 / mg0; var mb1 = 256 / mb0;
+
+        //debug print
+        //var rgb = "  mr0: " + mr0 + ", mr1: " + mr1
+        //        + ", mg0: " + mg0 + ", mg1: " + mg1 
+        //        + ", mb0: " + mb0 + ", mb1: " + mb1;
+        //document.getElementById("rgbValues").innerHTML = rgb; 
+
+	var maxIt = 256;
+	var x = 0.0; var y = 0.0;
+	var zx = 0.0; var zx0 = 0.0; var zy = 0.0;
+	var zx2 = 0.0; var zy2 = 0.0;
+        var cx = -0.7;
+        var cy = 0.27015;
+
+	for (var ky = 0; ky < yr; ky++)                     //800 y values
+	{
+	    y = ymin + (ymax - ymin) * ky / yr;
+	    for(var kx = 0; kx < xr; kx++)                  //1000 x values
+	    {
+	        x = xmin + (xmax - xmin) * kx / xr;
+	        zx = x; zy = y;
+	        for(var i = 0; i < maxIt; i++)
+	        {
+	            zx2 = zx * zx; zy2 = zy * zy;
+	            if(zx2 + zy2 > 4.0) break;        //not bounded, not in mandelbrot set
+
+	            zx0 = zx2 - zy2    + x;
+	            zy = 2.0 * zx * zy + y;
+	            zx = zx0;
+	        }
+	        var p = (xr * ky + kx) * 4;   //4 values per x,y coord
+	        pix[p]     = i % mr0 * mr1;   //red @ remainder(nr iterations/mr0) * mr1
+	        pix[p + 1] = i % mg0 * mg1;   //green
+	        pix[p + 2] = i % mb0 * mb1;   //blue
+	        pix[p + 3] = 255;             //alpha = transparency, 0=transparent
+	    }
+	}
+
+	context.putImageData(imgd, 0, 0);
+     
+        }
+
+        </script>
+    </head>
+
+<!-- ************************************** HTML ************************************ -->
+
+    <body onload="setColorAndShowMandel(random)">
+
+        <p onclick="getCoordsAndShowMandel(event)">
+          <canvas id="canvas" width="1000" height="800">
+          </canvas>
+        </p>
+
+        <!-- used for debug printing -->
+        <p id="mouseCoords"></p>
+        <p id="xyLimits"></p>
+        <p id="rgbValues"></p>
+        <p id="currentColor"></p>
+
+        <button type="button" onclick="Reset()">Reset to No Zoom</button>
+
+
+
+    </body>
+</html>

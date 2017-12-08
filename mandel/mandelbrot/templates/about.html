@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>About Mandelbrot</title>
+    </head>
+    <body>
+      <font face = "monaco">         <!-- all characters are same width in monaco -->
+      <a href="/">Go back home</a>
+
+      <h1>The Mandelbrot Set</h1>
+      <h3>
+Take a point (real, imaginary) in the xy complex plane. 
+<br><br>
+Set z = (x,y) = (real, imaginary). 
+<br><br>
+Iterate the computation:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        z = z*z
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+                                                + (real, imaginary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          = (x,y)*(x,y)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                + (real, imaginary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          = (x+iy)*(x+iy)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                + (real, imaginary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          = x*x + 2ixy - y*y
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                + (real, imaginary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          = (x*x - y*y, 2xy)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                + (real, imaginary)<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          = (x*x - y*y + real, 2xy + imaginary)<br>
+<br>
+If z GROWS more than 2 units distant from (0,0)<br>
+&nbsp;&nbsp;&nbsp;then the point (real, imaginary) is NOT in the Mandelbrot set<br>
+&nbsp;&nbsp;&nbsp;and the corresponding pixel is colored based on the ITERATIONS needed to ESCAPE <br>
+<br>
+If z STAYS within 2 units of (0,0)<br>
+&nbsp;&nbsp;&nbsp;then the point (real, imaginary) is IN the Mandelbrot set<br>
+&nbsp;&nbsp;&nbsp;and the corresponding pixel is colored BLACK<br>
+<br>
+
+      </h3>
+      <a href="/">Go back home</a>
+    </body>
+</html>
